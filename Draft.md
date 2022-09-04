@@ -13,4 +13,9 @@ This is a final summary of my Google Summer of Code Project with in-toto. This w
 11. Then download the metadata file to the local directory.
 
 
+# About in-toto
 
+In-toto is a framework designed to protect software supply chain integrity. It provides security against attackers who can get control of a step in the supply chain and alter the product for malicious intents like introducing backdoors in the source code and including vulnerable libraries in the final product. To address these issues, in-toto, cryptographically ensures the integrity of the software supply chain and makes sure that all the steps within the supply chain are clearly laid out. It achieves that by providing integrity, authentication and auditability to the supply chain as a whole. in-toto creates a file called layout for the project which is essentianlly a file signed by the project owner. This file dictates the series of steps that need to be carried out in the SSC(Software supply chain) in order to create a final product. Thirugh the course of the build a file called a link metadata is generated which gathers adn stores information about the commands and files related to each step of the build.   
+
+
+In-toto can significantly reduce an attacker’s opportunity when used in conjunction with other techniques described in the CNCF whitepaper and SLSA levels.
