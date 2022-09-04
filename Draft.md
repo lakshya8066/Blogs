@@ -8,5 +8,9 @@ This is a final summary of my Google Summer of Code Project with in-toto. This w
 6. After that, I found out that there was v0.2 of the SLSA predicate and the in-toto-java library only contained v0.1 code. So I created a new directory for java v0.2 which enabled me to use the v0.2 library in the plugin
 7. I then proceeded to the main work of writing the code that will create a metadata file that will be in compliance with the SLSA Provenance.
 8. This took a lot of decision-making about what info should each field contain and what is the actual meaning of the fields and how these fields can be viewed in a different context.
-9. Finally completed the project by generating the Provenance metadata.
+9. Mapped the fields with relevant objects that have the information required.
+10. Serialize the Provenance metadata object
+11. Then download the metadata file to the local directory.
+
+
 
