@@ -19,3 +19,7 @@ In-toto is a framework designed to protect software supply chain integrity. It p
 
 
 In-toto can significantly reduce an attacker’s opportunity when used in conjunction with other techniques described in the CNCF whitepaper and SLSA levels.
+
+# Goal of the proejct
+
+The goal of the project was to add support for a new predicate along with the old Link predicate. This new predicate i.e. Provenance not only achieves a higher SLSA (Supply-chain Levels for Software Artifacts) level guaranteeing more resilient integrity, but also describes where, when, and how software artifacts were produced by defining the moving parts in a complex supply chain. 
