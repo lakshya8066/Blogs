@@ -22,4 +22,9 @@ In-toto can significantly reduce an attacker’s opportunity when used in conjun
 
 # Goal of the proejct
 
-The goal of the project was to add support for a new predicate along with the old Link predicate. This new predicate i.e. Provenance not only achieves a higher SLSA (Supply-chain Levels for Software Artifacts) level guaranteeing more resilient integrity, but also describes where, when, and how software artifacts were produced by defining the moving parts in a complex supply chain. 
+The goal of the project was to add support for a new predicate called SLSA Provenance along with the old Link predicate in the in-toto attestation. This new predicate not only gathers information that the OG link metadata did but also extra information that will describe when, where and how the software artifacts were produced. Due to these extra information in the metadata, it achieves a higher SLSA (Supply-chain Levels for Software Artifacts) level guaranteeing more resilient integrity.  
+
+(Put image from SLSA Provenance)
+
+# Implementation of project
+
