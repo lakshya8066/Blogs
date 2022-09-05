@@ -28,3 +28,17 @@ The goal of the project was to add support for a new predicate called SLSA Prove
 
 # Implementation of project
 
+The project is divided in two parts,
+1. Refactoring the code in in-toto-java library to support the Data Structue of the metadata using Object Oriented Properties. Updating to Jenkins repository to Java 11 from Java 8.
+2. Gathering the correct information from the Jenkins internal objects to store in the metadata file.
+
+First challenge was to upadate the `pom.xml` of the maven project that built the plugin. This [Pull Request](https://github.com/in-toto/in-toto-jenkins-plugin/pull/4/files) contains the changes made to the pom.xml that upgrades the dependencies to the lastes version as well remove some redundant dependencies that are no longer of use. 
+
+The major portion of this update was to making every dependency compatible with Java 11. Once the PR was merged, we also had to update the Java version in the CI system of Jenkins tests. This [pull request](https://github.com/jenkinsci/in-toto-plugin/pull/30/files) is for the same.
+
+Once this was over with and we got the plugin up and running with Java 11, it was time to work on the setting up a class and sub-class structure that would depict the metadata format as required by the SLSA Provenance. 
+
+The code for version 0.1 of SLSA Provenance was already present in the in-toto-java library but not for verison 0.2 . This came up in one of our meetings that we should have support for both the versions to expand the usage of the library. So, the next task was to add a class based heirarchy and create a sort of a parent data structure that had a place for every feild of the Provenance metadata. 
+This [pull request](https://github.com/in-toto/in-toto-java/pull/64) contains the code to shift the existing code for version 0.1 to a new deidcated directory. 
+
+The code for the version 0.2 of SLSA Provenance resides in a new directory and this pull request achieves that.
