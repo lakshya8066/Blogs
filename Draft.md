@@ -15,12 +15,12 @@ This is a final summary of my Google Summer of Code Project with in-toto. This w
 
 # About in-toto
 
-In-toto is a framework designed to protect software supply chain integrity. It provides security against attackers who can get control of a step in the supply chain and alter the product for malicious intents like introducing backdoors in the source code and including vulnerable libraries in the final product. To address these issues, in-toto, cryptographically ensures the integrity of the software supply chain and makes sure that all the steps within the supply chain are clearly laid out. It achieves that by providing integrity, authentication and auditability to the supply chain as a whole. in-toto creates a file called layout for the project which is essentianlly a file signed by the project owner. This file dictates the series of steps that need to be carried out in the SSC(Software supply chain) in order to create a final product. Thirugh the course of the build a file called a link metadata is generated which gathers adn stores information about the commands and files related to each step of the build.   
+In-toto is a framework designed to protect software supply chain integrity. It provides security against attackers who can get control of a step in the supply chain and alter the product for malicious intents like introducing backdoor in the source code and including vulnerable libraries in the final product. To address these issues, in-toto, cryptographically ensures the integrity of the software supply chain and makes sure that all the steps within the supply chain are clearly laid out. It achieves that by providing integrity, authentication and auditability to the supply chain as a whole. in-toto creates a file called layout for the project which is essentially a file signed by the project owner. This file dictates the series of steps that need to be carried out in the SSC(Software supply chain) in order to create a final product. Through the course of the build a file called a link metadata is generated which gathers adn stores information about the commands and files related to each step of the build.   
 
 
 In-toto can significantly reduce an attacker’s opportunity when used in conjunction with other techniques described in the CNCF whitepaper and SLSA levels.
 
-# Goal of the proejct
+# Goal of the project
 
 The goal of the project was to add support for a new predicate called SLSA Provenance along with the old Link predicate in the in-toto attestation. This new predicate not only gathers information that the OG link metadata did but also extra information that will describe when, where and how the software artifacts were produced. Due to these extra information in the metadata, it achieves a higher SLSA (Supply-chain Levels for Software Artifacts) level guaranteeing more resilient integrity.  
 
@@ -41,4 +41,14 @@ Once this was over with and we got the plugin up and running with Java 11, it wa
 The code for version 0.1 of SLSA Provenance was already present in the in-toto-java library but not for verison 0.2 . This came up in one of our meetings that we should have support for both the versions to expand the usage of the library. So, the next task was to add a class based heirarchy and create a sort of a parent data structure that had a place for every feild of the Provenance metadata. 
 This [pull request](https://github.com/in-toto/in-toto-java/pull/64) contains the code to shift the existing code for version 0.1 to a new deidcated directory. 
 
-The code for the version 0.2 of SLSA Provenance resides in a new directory and this pull request achieves that.
+The code for the version 0.2 of SLSA Provenance resides in a new directory and this [pull request](https://github.com/in-toto/in-toto-java/pull/40) achieves that. There are minor changes from v0.2 to v0.1 of SLSA Provenance and this Pr updates the the data structure with the changes.
+The first half the projects end here where we complete the basic setup and preparation to structure the data structure.
+
+
+# in-toto wrapper
+The Provenance metadata for now is only enables for the in-toto wrapper. 
+
+# Figuring out the objects that have the information that we require in the metadata
+Almost all the information that we need can be found in setup function of the wrapper. This function contains environment variables related to all the internal of the Jenkins core. The 
+
+# 
