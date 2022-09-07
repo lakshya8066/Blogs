@@ -48,7 +48,9 @@ The first half the projects end here where we complete the basic setup and prepa
 # in-toto wrapper
 The Provenance metadata for now is only enables for the in-toto wrapper. 
 
-# Figuring out the objects that have the information that we require in the metadata
-Almost all the information that we need can be found in setup function of the wrapper. This function contains environment variables related to all the internal of the Jenkins core. The 
+# Gathering information to fill in the metadata
+Now that the structure for the metadata is ready in in-toto-java library, we can use it to store the metadata. Since the defination of the fields in the metadata are flexible, there was a lot of discussion around how we want to use them. This [pull reuqest](https://github.com/in-toto/in-toto-jenkins-plugin/pull/5#pullrequestreview-1098226215) adds support for a new predicate i.e SLSA Provenance v0.2 that gathers information from each step of the build, store it in a txt file and dumps it in the local directory. 
 
-# 
+This was the summary of my work as a Google Summer of Code mentee at CNCF. Thank you for your time reading the report.
+
+If you have anything you wanna talk about or just say Hi, do reach out to me on Linkedin or Twitter. I will be more than happy to talk to you.
