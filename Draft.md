@@ -33,6 +33,7 @@ The first half the projects end here where we complete the basic setup and prepa
 
 Now that the structure for the metadata is ready in in-toto-java library, we can use it to store the metadata. Since the defination of the fields in the metadata are flexible, there was a lot of discussion around how we want to use them. This [pull reuqest](https://github.com/in-toto/in-toto-jenkins-plugin/pull/5#pullrequestreview-1098226215) adds support for a new predicate i.e SLSA Provenance v0.2 that gathers information from each step of the build, store it in a txt file and dumps it in the local directory. 
 
+<<<<<<< HEAD
 To demonstrate the working of the plugin, we can use a demo project https://github.com/lakshya8066/in-toto-demo/tree/test-plugin
 A Jenkinsfile is present in the repository that triggers of the build. This is a pipeline that has two steps. The first step is a 'build' step performed by a functionary Bob. The second step compresses the project into a tarball performed by funtionary Carl.
 
