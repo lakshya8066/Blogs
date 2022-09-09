@@ -13,7 +13,7 @@ The goal of the project was to add support for a new predicate called SLSA Prove
 
 # Implementation of project
 
-## 1. Refactoring the code
+## 1. Refactore the code
 
 The in-toto-java library which acts as in-toto api for Jenkins is build on Java 11 whereas the Jenkins was build on Java 8. So the first challenge was to upadate the `pom.xml` of the maven project that built the plugin. This [Pull Request](https://github.com/in-toto/in-toto-jenkins-plugin/pull/4/files) contains the changes made to the pom.xml that upgrades the dependencies to the lastes version as well remove some redundant dependencies that are no longer of use. 
 
@@ -23,18 +23,17 @@ Once this was over with and we got the plugin up and running with Java 11, it wa
 
 ![Provenance Metadata](/images/example.png)
 
-The code for version 0.1 of SLSA Provenance was already present in the in-toto-java library but not for verison 0.2 . This came up in one of our meetings that we should have support for both the versions to expand the usage of the library. So, the next task was to add a class based heirarchy and create a sort of a parent data structure that had a place for every feild of the Provenance metadata. 
+The code for version 0.1 of SLSA Provenance was already present in the in-toto-java library but not for verison 0.2 . There are slight changes between the two. This came up in one of our meetings that we should have support for both the versions to expand the usage of the library. So, the next task was to add a class based heirarchy and create a sort of a parent data structure that had a place for every feild of the Provenance metadata. 
 This [pull request](https://github.com/in-toto/in-toto-java/pull/64) contains the code to shift the existing code for version 0.1 to a new deidcated directory. 
 
-The code for the version 0.2 of SLSA Provenance resides in a new directory and this [pull request](https://github.com/in-toto/in-toto-java/pull/40) achieves that. There are minor changes from v0.2 to v0.1 of SLSA Provenance and this Pr updates the the data structure with the changes.
-The first half the projects end here where we complete the basic setup and preparation to structure the data structure.
+Once we had code for v0.1 in a dedicated directory, I started working on v0.2. The code for the version 0.2 of SLSA Provenance resides in a new directory and this [pull request](https://github.com/in-toto/in-toto-java/pull/40) achieves that. There are minor changes from v0.2 to v0.1 of SLSA Provenance and this pull request updates the the data structure with the changes.
+The first half the projects end here where we complete the basic setup and preparation to structure the metadata.
 
-## 2. Gathering the correct information from the Jenkins internal objects to store in the metadata file.
-# in-toto wrapper
-The Provenance metadata for now is only enables for the in-toto wrapper. 
+## 2. Gather inforamtion and add support for Provenance metadata in the plugin 
 
-# Gathering information to fill in the metadata
 Now that the structure for the metadata is ready in in-toto-java library, we can use it to store the metadata. Since the defination of the fields in the metadata are flexible, there was a lot of discussion around how we want to use them. This [pull reuqest](https://github.com/in-toto/in-toto-jenkins-plugin/pull/5#pullrequestreview-1098226215) adds support for a new predicate i.e SLSA Provenance v0.2 that gathers information from each step of the build, store it in a txt file and dumps it in the local directory. 
+
+To demonstrate the working of the plugin, we can use a demo project 
 
 This was the summary of my work as a Google Summer of Code mentee at CNCF. Thank you for your time reading the report.
 
