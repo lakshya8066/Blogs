@@ -33,7 +33,33 @@ The first half the projects end here where we complete the basic setup and prepa
 
 Now that the structure for the metadata is ready in in-toto-java library, we can use it to store the metadata. Since the defination of the fields in the metadata are flexible, there was a lot of discussion around how we want to use them. This [pull reuqest](https://github.com/in-toto/in-toto-jenkins-plugin/pull/5#pullrequestreview-1098226215) adds support for a new predicate i.e SLSA Provenance v0.2 that gathers information from each step of the build, store it in a txt file and dumps it in the local directory. 
 
-To demonstrate the working of the plugin, we can use a demo project 
+To demonstrate the working of the plugin, we can use a demo project https://github.com/lakshya8066/in-toto-demo/tree/test-plugin
+A Jenkinsfile is present in the repository that triggers of the build. This is a pipeline that has two steps. The first step is a 'build' step performed by a functionary Bob. The second step compresses the project into a tarball performed by funtionary Carl.
+
+```
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                in_toto_wrap(['stepName': 'Build',
+                    'keyPath': '/var/lib/jenkins/workspace/Test/functionary_bob/bob',
+                    'transport': '']) {
+                        echo 'Building..'
+                    }
+                in_toto_wrap(['stepName': 'Package',
+                    'keyPath': '/var/lib/jenkins/workspace/Test/functionary_carl/carl',
+                    'transport': '']){
+                        sh label: "compress-for-release", script: "tar --exclude .git -zcvf demo-project.tar.gz . && set +e"
+                    }
+            }
+        }
+    }
+}
+```
+This pipeline generates two metadata files. These files contain a lot of very curcial and small information regarding the build of the project.
+
+
 
 This was the summary of my work as a Google Summer of Code mentee at CNCF. Thank you for your time reading the report.
 
