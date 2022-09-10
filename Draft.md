@@ -57,10 +57,246 @@ pipeline {
     }
 }
 ```
-This pipeline generates two metadata files. These files contain a lot of very curcial and small information regarding the build of the project.
+This pipeline generates two metadata files. These files contain a lot of very curcial and small information regarding the build of the project. An example of a SLSA Provenance metadata v0.2 is attached below. The project used to generate this metadata file can be found here https://github.com/lakshya8066/in-toto-demo/tree/test-plugin . 
 
-
+```
+{
+  "builder": {
+    "id": "http://localhost:8080/@built-in"
+  },
+  "buildType": null,
+  "invocation": {
+    "environment": {
+      "BUILD_DISPLAY_NAME": "#1",
+      "BUILD_ID": "1",
+      "BUILD_NUMBER": "1",
+      "BUILD_TAG": "jenkins-demo-1",
+      "BUILD_URL": "http://localhost:8080/job/demo/1/",
+      "CI": "true",
+      "CLASSPATH": "",
+      "EXECUTOR_NUMBER": "0",
+      "GIT_BRANCH": "origin/test-plugin",
+      "GIT_COMMIT": "56e22f57103c345ed6f6c67aaa6a33bca0decc87",
+      "GIT_URL": "https://github.com/lakshya8066/in-toto-demo.git",
+      "HOME": "/var/lib/jenkins",
+      "HUDSON_HOME": "/var/lib/jenkins",
+      "HUDSON_URL": "http://localhost:8080/",
+      "INVOCATION_ID": "2d07ce95c77e452eb0d2217486832cae",
+      "JENKINS_HOME": "/var/lib/jenkins",
+      "JENKINS_NODE_COOKIE": "225a26d9-44e6-487c-9c28-0bba94aa7085",
+      "JENKINS_URL": "http://localhost:8080/",
+      "JOB_BASE_NAME": "demo",
+      "JOB_DISPLAY_URL": "http://localhost:8080/job/demo/display/redirect",
+      "JOB_NAME": "demo",
+      "JOB_URL": "http://localhost:8080/job/demo/",
+      "JOURNAL_STREAM": "8:687541",
+      "LANG": "en_IN",
+      "LANGUAGE": "en_IN:en",
+      "LOGNAME": "jenkins",
+      "NODE_LABELS": "built-in",
+      "NODE_NAME": "built-in",
+      "NOTIFY_SOCKET": "/run/systemd/notify",
+      "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin",
+      "PWD": "/var/lib/jenkins",
+      "RUN_ARTIFACTS_DISPLAY_URL": "http://localhost:8080/job/demo/1/display/redirect?page\u003dartifacts",
+      "RUN_CHANGES_DISPLAY_URL": "http://localhost:8080/job/demo/1/display/redirect?page\u003dchanges",
+      "RUN_DISPLAY_URL": "http://localhost:8080/job/demo/1/display/redirect",
+      "RUN_TESTS_DISPLAY_URL": "http://localhost:8080/job/demo/1/display/redirect?page\u003dtests",
+      "SHELL": "/bin/bash",
+      "STAGE_NAME": "Build",
+      "SYSTEMD_EXEC_PID": "290861",
+      "USER": "jenkins",
+      "WORKSPACE": "/var/lib/jenkins/workspace/demo",
+      "WORKSPACE_TMP": "/var/lib/jenkins/workspace/demo@tmp"
+    },
+    "parameters": null,
+    "configSource": {
+      "uri": "https://github.com/lakshya8066/in-toto-demo.git",
+      "digest": {
+        "sha1": "56e22f57103c345ed6f6c67aaa6a33bca0decc87"
+      },
+      "entryPoint": "Jenkinsfile"
+    }
+  },
+  "metadata": {
+    "buildInvocationId": "2d07ce95c77e452eb0d2217486832cae",
+    "buildStartedOn": {
+      "dateTime": {
+        "date": {
+          "year": 2022,
+          "month": 9,
+          "day": 9
+        },
+        "time": {
+          "hour": 20,
+          "minute": 42,
+          "second": 26,
+          "nano": 122000000
+        }
+      },
+      "offset": {
+        "totalSeconds": 19800
+      }
+    },
+    "buildFinishedOn": {
+      "dateTime": {
+        "date": {
+          "year": 2022,
+          "month": 9,
+          "day": 9
+        },
+        "time": {
+          "hour": 20,
+          "minute": 42,
+          "second": 26,
+          "nano": 518000000
+        }
+      },
+      "offset": {
+        "totalSeconds": 19800
+      }
+    },
+    "completeness": {
+      "parameters": false,
+      "environment": false,
+      "materials": false
+    },
+    "reproducible": false
+  },
+  "materials": [
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/final_product/.keep",
+      "digest": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/requirements.txt",
+      "digest": {
+        "sha256": "7aeed0e09e96aca7f6b85d89c039fe236a1b5e6a2e2b61b4eb586ea03dfef119"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/README.md",
+      "digest": {
+        "sha256": "a6438fea624008977c3beb70e50b466c2fd8dd44de5030a4e9f5804a8f885a39"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/demo-project.tar.gz",
+      "digest": {
+        "sha256": "4ffacf508dec51267c28e9a2953e09f1eefdf7be1e0c7a2d5824537bc2965892"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/run_demo.py",
+      "digest": {
+        "sha256": "b5175904b5f86dafe9cda6482a37c40158736efbc88e24ce3720eeb50e871f86"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Build.txt",
+      "digest": {
+        "sha256": "47cfd7b4a581ae003012d6afecc880968b9fd97f17d140cc67bfe93f969362a4"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/run_demo_md.py",
+      "digest": {
+        "sha256": "3fe2ed93bee75f11515f0b726e5597bdabc17b10a89af3a455ada7f01f70d39d"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Jenkinsfile-2",
+      "digest": {
+        "sha256": "849acd0c7491f5010e227141dc90738d4d4be4b894fac5dee243ee7e890ff1b3"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Jenkinsfile-1",
+      "digest": {
+        "sha256": "dca17f27fe9811fd32bbb083a50f0f170ae1610234b353ba422c5d30edf4eb88"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Package.txt",
+      "digest": {
+        "sha256": "c3655eadd0b7b7a47ae4cda5996976c084a55fb7b894805a5934b364888692b3"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/owner_alice/alice",
+      "digest": {
+        "sha256": "c1d5009b017500a74949e98dab686cc71e7ef79fe93dde68b5ee753c389c4d6b"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/functionary_bob/bob",
+      "digest": {
+        "sha256": "9484e07b40a0d9c279e33054fa976e4ae5de6191b29e96ef4ce1d13af7626b34"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/functionary_carl/carl",
+      "digest": {
+        "sha256": "f96102449b701d3eafbcdc464845f333e0eeb92c650ab740028082e245783464"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/owner_alice/alice.pub",
+      "digest": {
+        "sha256": "54d66a3cda423bb31027f388ffb6753a37e7bd5d9d883140fb818dac73456695"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/functionary_bob/bob.pub",
+      "digest": {
+        "sha256": "35ad968500981d129660dceab11f00bb2e84fb763c2dd48674b0a48c1aa03829"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/owner_alice/create_layout.py",
+      "digest": {
+        "sha256": "38161e1c463cb88f3470cd261678d8664ee17357811a8d70c1073945282d209c"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/functionary_carl/carl.pub",
+      "digest": {
+        "sha256": "eb8bdfa6cc6dd83a70c7b8c194c61b998cc4a3ab780d85f49f77877f83ac7b05"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Jenkinsfile-4",
+      "digest": {
+        "sha256": "daad438b677ede3784f501aa36f4d9475b9140ec3c0b5fb65ad3281b6de1305f"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Jenkinsfile-3",
+      "digest": {
+        "sha256": "a0bc146d83ffccd92bd5c679ec6f0d05f0ca12ad9d81deb24393699b906c2228"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Jenkinsfile-5",
+      "digest": {
+        "sha256": "be52e72498aa163dfc44e925ca349b12b03673c8cc8ba728c66c9885602ee007"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Jenkinsfile",
+      "digest": {
+        "sha256": "8a08f454e5dc7612de5f0de1e0f62509ea6fdef032a9d17c1f26947c4903a285"
+      }
+    }
+  ]
+}
+```
 
 This was the summary of my work as a Google Summer of Code mentee at CNCF. Thank you for your time reading the report.
 
-If you have anything you wanna talk about or just say Hi, do reach out to me on Linkedin or Twitter. I will be more than happy to talk to you.
+If you have anything you wanna talk about or just say Hi, do reach out to me on Linkedin or Twitter. I will be more than happy to have a conversation :) 
+
+Twitter: https://twitter.com/lakshya806
+Linkedin: https://www.linkedin.com/in/lakshya806/
