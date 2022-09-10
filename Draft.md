@@ -300,4 +300,5 @@ This was the summary of my work as a Google Summer of Code mentee at CNCF. Thank
 If you have anything you wanna talk about or just say Hi, do reach out to me on Linkedin or Twitter. I will be more than happy to have a conversation :) 
 
 Twitter: https://twitter.com/lakshya806
+
 Linkedin: https://www.linkedin.com/in/lakshya806/
