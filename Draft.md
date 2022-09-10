@@ -15,21 +15,21 @@ The goal of the project was to add support for a new predicate called SLSA Prove
 
 The in-toto-java library which acts as in-toto api for Jenkins is build on Java 11 whereas the Jenkins was build on Java 8. So the first challenge was to upadate the `pom.xml` of the maven project that built the plugin. This [Pull Request](https://github.com/in-toto/in-toto-jenkins-plugin/pull/4/files) contains the changes made to the pom.xml that upgrades the dependencies to the lastes version as well remove some redundant dependencies that are no longer of use. 
 
-The major portion of this update was to making every dependency compatible with Java 11. Once the PR was merged, we also had to update the Java version in the CI system of Jenkins tests. This [pull request](https://github.com/jenkinsci/in-toto-plugin/pull/30/files) is for the same.
+The major portion of this update was to making every dependency compatible with Java 11. Once the PR was merged, we also had to update the Java version in the CI system of Jenkins tests. This [Pull Request](https://github.com/jenkinsci/in-toto-plugin/pull/30/files) is for the same.
 
 Once this was over with and we got the plugin up and running with Java 11, it was time to work on the setting up a class and sub-class structure that would depict the metadata format as required by the SLSA Provenance. 
 
 ![Provenance Metadata](/images/example.png)
 
 The code for version 0.1 of SLSA Provenance was already present in the in-toto-java library but not for verison 0.2 . There are slight changes between the two. This came up in one of our meetings that we should have support for both the versions to expand the usage of the library. So, the next task was to add a class based heirarchy and create a sort of a parent data structure that had a place for every feild of the Provenance metadata. 
-This [pull request](https://github.com/in-toto/in-toto-java/pull/64) contains the code to shift the existing code for version 0.1 to a new deidcated directory. 
+This [Pull Request](https://github.com/in-toto/in-toto-java/pull/64) contains the code to shift the existing code for version 0.1 to a new deidcated directory. 
 
-Once we had code for v0.1 in a dedicated directory, I started working on v0.2. The code for the version 0.2 of SLSA Provenance resides in a new directory and this [pull request](https://github.com/in-toto/in-toto-java/pull/40) achieves that. There are minor changes from v0.2 to v0.1 of SLSA Provenance and this pull request updates the the data structure with the changes.
+Once we had code for v0.1 in a dedicated directory, I started working on v0.2. The code for the version 0.2 of SLSA Provenance resides in a new directory and this [Pull Request](https://github.com/in-toto/in-toto-java/pull/40) achieves that. There are minor changes from v0.2 to v0.1 of SLSA Provenance and this pull request updates the the data structure with the changes.
 The first half the projects end here where we complete the basic setup and preparation to structure the metadata.
 
 ## 2. Gather inforamtion and add support for Provenance metadata in the plugin 
 
-Now that the structure for the metadata is ready in in-toto-java library, we can use it to store the metadata. Since the defination of the fields in the metadata are flexible, there was a lot of discussion around how we want to use them. This [pull reuqest](https://github.com/in-toto/in-toto-jenkins-plugin/pull/5#pullrequestreview-1098226215) adds support for a new predicate i.e SLSA Provenance v0.2 that gathers information from each step of the build, store it in a txt file and dumps it in the local directory. 
+Now that the structure for the metadata is ready in in-toto-java library, we can use it to store the metadata. Since the defination of the fields in the metadata are flexible, there was a lot of discussion around how we want to use them. This [Pull Request](https://github.com/in-toto/in-toto-jenkins-plugin/pull/5#pullrequestreview-1098226215) adds support for a new predicate i.e SLSA Provenance v0.2 that gathers information from each step of the build, store it in a txt file and dumps it in the local directory. 
 
 <<<<<<< HEAD
 To demonstrate the working of the plugin, we can use a demo project https://github.com/lakshya8066/in-toto-demo/tree/test-plugin
