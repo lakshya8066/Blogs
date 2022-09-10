@@ -1,56 +1,304 @@
 This is a final summary of my Google Summer of Code Project with in-toto. This was a summer-long project. List of the things I want to talk about in this blog:
 
-1. A little about in-toto 
-2. Introduction to the Jenkins plugin of in-toto
-3. What is SLSA Provenance and my project to change the predicate of the in-toto attestation
-4. The first was to get familiar with the Jenkins Plugin and how to test it and set the development environment locally
-5. Then I found that the in-toto-java library supports java 11 so I had to update the Jenkins plugin java level to 11. This was hectic since there was a lot of friction in understanding what is going wrong.
-6. After that, I found out that there was v0.2 of the SLSA predicate and the in-toto-java library only contained v0.1 code. So I created a new directory for java v0.2 which enabled me to use the v0.2 library in the plugin
-7. I then proceeded to the main work of writing the code that will create a metadata file that will be in compliance with the SLSA Provenance.
-8. This took a lot of decision-making about what info should each field contain and what is the actual meaning of the fields and how these fields can be viewed in a different context.
-9. Mapped the fields with relevant objects that have the information required.
-10. Serialize the Provenance metadata object
-11. Then download the metadata file to the local directory.
-
-
 # About in-toto
 
 In-toto is a framework designed to protect software supply chain integrity. It provides security against attackers who can get control of a step in the supply chain and alter the product for malicious intents like introducing backdoor in the source code and including vulnerable libraries in the final product. To address these issues, in-toto, cryptographically ensures the integrity of the software supply chain and makes sure that all the steps within the supply chain are clearly laid out. It achieves that by providing integrity, authentication and auditability to the supply chain as a whole. in-toto creates a file called layout for the project which is essentially a file signed by the project owner. This file dictates the series of steps that need to be carried out in the SSC(Software supply chain) in order to create a final product. Through the course of the build a file called a link metadata is generated which gathers adn stores information about the commands and files related to each step of the build.   
-
-
 In-toto can significantly reduce an attacker’s opportunity when used in conjunction with other techniques described in the CNCF whitepaper and SLSA levels.
 
 # Goal of the project
 
 The goal of the project was to add support for a new predicate called SLSA Provenance along with the old Link predicate in the in-toto attestation. This new predicate not only gathers information that the OG link metadata did but also extra information that will describe when, where and how the software artifacts were produced. Due to these extra information in the metadata, it achieves a higher SLSA (Supply-chain Levels for Software Artifacts) level guaranteeing more resilient integrity.  
 
-(Put image from SLSA Provenance)
+![SLSA Provenance](/images/provenance.svg)
 
 # Implementation of project
 
-The project is divided in two parts,
-1. Refactoring the code in in-toto-java library to support the Data Structue of the metadata using Object Oriented Properties. Updating to Jenkins repository to Java 11 from Java 8.
-2. Gathering the correct information from the Jenkins internal objects to store in the metadata file.
+## 1. Refactore the code
 
-First challenge was to upadate the `pom.xml` of the maven project that built the plugin. This [Pull Request](https://github.com/in-toto/in-toto-jenkins-plugin/pull/4/files) contains the changes made to the pom.xml that upgrades the dependencies to the lastes version as well remove some redundant dependencies that are no longer of use. 
+The in-toto-java library which acts as in-toto api for Jenkins is build on Java 11 whereas the Jenkins was build on Java 8. So the first challenge was to upadate the `pom.xml` of the maven project that built the plugin. This [Pull Request](https://github.com/in-toto/in-toto-jenkins-plugin/pull/4/files) contains the changes made to the pom.xml that upgrades the dependencies to the lastes version as well remove some redundant dependencies that are no longer of use. 
 
 The major portion of this update was to making every dependency compatible with Java 11. Once the PR was merged, we also had to update the Java version in the CI system of Jenkins tests. This [pull request](https://github.com/jenkinsci/in-toto-plugin/pull/30/files) is for the same.
 
 Once this was over with and we got the plugin up and running with Java 11, it was time to work on the setting up a class and sub-class structure that would depict the metadata format as required by the SLSA Provenance. 
 
-The code for version 0.1 of SLSA Provenance was already present in the in-toto-java library but not for verison 0.2 . This came up in one of our meetings that we should have support for both the versions to expand the usage of the library. So, the next task was to add a class based heirarchy and create a sort of a parent data structure that had a place for every feild of the Provenance metadata. 
+![Provenance Metadata](/images/example.png)
+
+The code for version 0.1 of SLSA Provenance was already present in the in-toto-java library but not for verison 0.2 . There are slight changes between the two. This came up in one of our meetings that we should have support for both the versions to expand the usage of the library. So, the next task was to add a class based heirarchy and create a sort of a parent data structure that had a place for every feild of the Provenance metadata. 
 This [pull request](https://github.com/in-toto/in-toto-java/pull/64) contains the code to shift the existing code for version 0.1 to a new deidcated directory. 
 
-The code for the version 0.2 of SLSA Provenance resides in a new directory and this [pull request](https://github.com/in-toto/in-toto-java/pull/40) achieves that. There are minor changes from v0.2 to v0.1 of SLSA Provenance and this Pr updates the the data structure with the changes.
-The first half the projects end here where we complete the basic setup and preparation to structure the data structure.
+Once we had code for v0.1 in a dedicated directory, I started working on v0.2. The code for the version 0.2 of SLSA Provenance resides in a new directory and this [pull request](https://github.com/in-toto/in-toto-java/pull/40) achieves that. There are minor changes from v0.2 to v0.1 of SLSA Provenance and this pull request updates the the data structure with the changes.
+The first half the projects end here where we complete the basic setup and preparation to structure the metadata.
 
+## 2. Gather inforamtion and add support for Provenance metadata in the plugin 
 
-# in-toto wrapper
-The Provenance metadata for now is only enables for the in-toto wrapper. 
-
-# Gathering information to fill in the metadata
 Now that the structure for the metadata is ready in in-toto-java library, we can use it to store the metadata. Since the defination of the fields in the metadata are flexible, there was a lot of discussion around how we want to use them. This [pull reuqest](https://github.com/in-toto/in-toto-jenkins-plugin/pull/5#pullrequestreview-1098226215) adds support for a new predicate i.e SLSA Provenance v0.2 that gathers information from each step of the build, store it in a txt file and dumps it in the local directory. 
+
+<<<<<<< HEAD
+To demonstrate the working of the plugin, we can use a demo project https://github.com/lakshya8066/in-toto-demo/tree/test-plugin
+A Jenkinsfile is present in the repository that triggers of the build. This is a pipeline that has two steps. The first step is a 'build' step performed by a functionary Bob. The second step compresses the project into a tarball performed by funtionary Carl.
+
+```
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                in_toto_wrap(['stepName': 'Build',
+                    'keyPath': '/var/lib/jenkins/workspace/Test/functionary_bob/bob',
+                    'transport': '']) {
+                        echo 'Building..'
+                    }
+                in_toto_wrap(['stepName': 'Package',
+                    'keyPath': '/var/lib/jenkins/workspace/Test/functionary_carl/carl',
+                    'transport': '']){
+                        sh label: "compress-for-release", script: "tar --exclude .git -zcvf demo-project.tar.gz . && set +e"
+                    }
+            }
+        }
+    }
+}
+```
+This pipeline generates two metadata files. These files contain a lot of very curcial and small information regarding the build of the project. An example of a SLSA Provenance metadata v0.2 is attached below. The project used to generate this metadata file can be found here https://github.com/lakshya8066/in-toto-demo/tree/test-plugin . 
+
+```
+{
+  "builder": {
+    "id": "http://localhost:8080/@built-in"
+  },
+  "buildType": null,
+  "invocation": {
+    "environment": {
+      "BUILD_DISPLAY_NAME": "#1",
+      "BUILD_ID": "1",
+      "BUILD_NUMBER": "1",
+      "BUILD_TAG": "jenkins-demo-1",
+      "BUILD_URL": "http://localhost:8080/job/demo/1/",
+      "CI": "true",
+      "CLASSPATH": "",
+      "EXECUTOR_NUMBER": "0",
+      "GIT_BRANCH": "origin/test-plugin",
+      "GIT_COMMIT": "56e22f57103c345ed6f6c67aaa6a33bca0decc87",
+      "GIT_URL": "https://github.com/lakshya8066/in-toto-demo.git",
+      "HOME": "/var/lib/jenkins",
+      "HUDSON_HOME": "/var/lib/jenkins",
+      "HUDSON_URL": "http://localhost:8080/",
+      "INVOCATION_ID": "2d07ce95c77e452eb0d2217486832cae",
+      "JENKINS_HOME": "/var/lib/jenkins",
+      "JENKINS_NODE_COOKIE": "225a26d9-44e6-487c-9c28-0bba94aa7085",
+      "JENKINS_URL": "http://localhost:8080/",
+      "JOB_BASE_NAME": "demo",
+      "JOB_DISPLAY_URL": "http://localhost:8080/job/demo/display/redirect",
+      "JOB_NAME": "demo",
+      "JOB_URL": "http://localhost:8080/job/demo/",
+      "JOURNAL_STREAM": "8:687541",
+      "LANG": "en_IN",
+      "LANGUAGE": "en_IN:en",
+      "LOGNAME": "jenkins",
+      "NODE_LABELS": "built-in",
+      "NODE_NAME": "built-in",
+      "NOTIFY_SOCKET": "/run/systemd/notify",
+      "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin",
+      "PWD": "/var/lib/jenkins",
+      "RUN_ARTIFACTS_DISPLAY_URL": "http://localhost:8080/job/demo/1/display/redirect?page\u003dartifacts",
+      "RUN_CHANGES_DISPLAY_URL": "http://localhost:8080/job/demo/1/display/redirect?page\u003dchanges",
+      "RUN_DISPLAY_URL": "http://localhost:8080/job/demo/1/display/redirect",
+      "RUN_TESTS_DISPLAY_URL": "http://localhost:8080/job/demo/1/display/redirect?page\u003dtests",
+      "SHELL": "/bin/bash",
+      "STAGE_NAME": "Build",
+      "SYSTEMD_EXEC_PID": "290861",
+      "USER": "jenkins",
+      "WORKSPACE": "/var/lib/jenkins/workspace/demo",
+      "WORKSPACE_TMP": "/var/lib/jenkins/workspace/demo@tmp"
+    },
+    "parameters": null,
+    "configSource": {
+      "uri": "https://github.com/lakshya8066/in-toto-demo.git",
+      "digest": {
+        "sha1": "56e22f57103c345ed6f6c67aaa6a33bca0decc87"
+      },
+      "entryPoint": "Jenkinsfile"
+    }
+  },
+  "metadata": {
+    "buildInvocationId": "2d07ce95c77e452eb0d2217486832cae",
+    "buildStartedOn": {
+      "dateTime": {
+        "date": {
+          "year": 2022,
+          "month": 9,
+          "day": 9
+        },
+        "time": {
+          "hour": 20,
+          "minute": 42,
+          "second": 26,
+          "nano": 122000000
+        }
+      },
+      "offset": {
+        "totalSeconds": 19800
+      }
+    },
+    "buildFinishedOn": {
+      "dateTime": {
+        "date": {
+          "year": 2022,
+          "month": 9,
+          "day": 9
+        },
+        "time": {
+          "hour": 20,
+          "minute": 42,
+          "second": 26,
+          "nano": 518000000
+        }
+      },
+      "offset": {
+        "totalSeconds": 19800
+      }
+    },
+    "completeness": {
+      "parameters": false,
+      "environment": false,
+      "materials": false
+    },
+    "reproducible": false
+  },
+  "materials": [
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/final_product/.keep",
+      "digest": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/requirements.txt",
+      "digest": {
+        "sha256": "7aeed0e09e96aca7f6b85d89c039fe236a1b5e6a2e2b61b4eb586ea03dfef119"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/README.md",
+      "digest": {
+        "sha256": "a6438fea624008977c3beb70e50b466c2fd8dd44de5030a4e9f5804a8f885a39"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/demo-project.tar.gz",
+      "digest": {
+        "sha256": "4ffacf508dec51267c28e9a2953e09f1eefdf7be1e0c7a2d5824537bc2965892"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/run_demo.py",
+      "digest": {
+        "sha256": "b5175904b5f86dafe9cda6482a37c40158736efbc88e24ce3720eeb50e871f86"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Build.txt",
+      "digest": {
+        "sha256": "47cfd7b4a581ae003012d6afecc880968b9fd97f17d140cc67bfe93f969362a4"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/run_demo_md.py",
+      "digest": {
+        "sha256": "3fe2ed93bee75f11515f0b726e5597bdabc17b10a89af3a455ada7f01f70d39d"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Jenkinsfile-2",
+      "digest": {
+        "sha256": "849acd0c7491f5010e227141dc90738d4d4be4b894fac5dee243ee7e890ff1b3"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Jenkinsfile-1",
+      "digest": {
+        "sha256": "dca17f27fe9811fd32bbb083a50f0f170ae1610234b353ba422c5d30edf4eb88"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Package.txt",
+      "digest": {
+        "sha256": "c3655eadd0b7b7a47ae4cda5996976c084a55fb7b894805a5934b364888692b3"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/owner_alice/alice",
+      "digest": {
+        "sha256": "c1d5009b017500a74949e98dab686cc71e7ef79fe93dde68b5ee753c389c4d6b"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/functionary_bob/bob",
+      "digest": {
+        "sha256": "9484e07b40a0d9c279e33054fa976e4ae5de6191b29e96ef4ce1d13af7626b34"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/functionary_carl/carl",
+      "digest": {
+        "sha256": "f96102449b701d3eafbcdc464845f333e0eeb92c650ab740028082e245783464"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/owner_alice/alice.pub",
+      "digest": {
+        "sha256": "54d66a3cda423bb31027f388ffb6753a37e7bd5d9d883140fb818dac73456695"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/functionary_bob/bob.pub",
+      "digest": {
+        "sha256": "35ad968500981d129660dceab11f00bb2e84fb763c2dd48674b0a48c1aa03829"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/owner_alice/create_layout.py",
+      "digest": {
+        "sha256": "38161e1c463cb88f3470cd261678d8664ee17357811a8d70c1073945282d209c"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/functionary_carl/carl.pub",
+      "digest": {
+        "sha256": "eb8bdfa6cc6dd83a70c7b8c194c61b998cc4a3ab780d85f49f77877f83ac7b05"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Jenkinsfile-4",
+      "digest": {
+        "sha256": "daad438b677ede3784f501aa36f4d9475b9140ec3c0b5fb65ad3281b6de1305f"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Jenkinsfile-3",
+      "digest": {
+        "sha256": "a0bc146d83ffccd92bd5c679ec6f0d05f0ca12ad9d81deb24393699b906c2228"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Jenkinsfile-5",
+      "digest": {
+        "sha256": "be52e72498aa163dfc44e925ca349b12b03673c8cc8ba728c66c9885602ee007"
+      }
+    },
+    {
+      "uri": "/var/lib/jenkins/workspace/demo/Jenkinsfile",
+      "digest": {
+        "sha256": "8a08f454e5dc7612de5f0de1e0f62509ea6fdef032a9d17c1f26947c4903a285"
+      }
+    }
+  ]
+}
+```
 
 This was the summary of my work as a Google Summer of Code mentee at CNCF. Thank you for your time reading the report.
 
-If you have anything you wanna talk about or just say Hi, do reach out to me on Linkedin or Twitter. I will be more than happy to talk to you.
+If you have anything you wanna talk about or just say Hi, do reach out to me on Linkedin or Twitter. I will be more than happy to have a conversation :) 
+
+Twitter: https://twitter.com/lakshya806
+
+Linkedin: https://www.linkedin.com/in/lakshya806/
